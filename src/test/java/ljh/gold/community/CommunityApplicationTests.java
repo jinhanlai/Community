@@ -1,4 +1,4 @@
-package ljh.gold.community.community;
+package ljh.gold.community;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

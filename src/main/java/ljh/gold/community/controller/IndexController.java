@@ -1,4 +1,4 @@
-package ljh.gold.community.community.controller;
+package ljh.gold.community.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
