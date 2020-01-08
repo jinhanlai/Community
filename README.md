@@ -12,5 +12,29 @@
 
 [Maven仓库下载fastjson](https://mvnrepository.com/artifact/com.alibaba/fastjson)
 
-##工具
-git
+[Springboot 数据库连接](https://docs.spring.io/spring-boot/docs/2.2.0.RC1/reference/htmlsingle/)
+
+[mybatis的快速链接](http://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)
+
+
+##项目说明
+controller      #处理页面信息
+dto             #数据传输对象，相当于实体类，存储对象的类
+mapper          #数据库操作
+provider        #处理get，put请求
+model           #数据库中的表对象
+
+##脚本
+```sql
+CREATE TABLE user
+(
+  account_id   VARCHAR(100) NOT NULL,
+  name         VARCHAR(50)  NULL,
+  token        CHAR(36)     NULL,
+  gmt_create   BIGINT       NULL,
+  gmt_modified BIGINT       NULL,
+  id           INT(255) AUTO_INCREMENT
+    PRIMARY KEY
+);
+```
+
