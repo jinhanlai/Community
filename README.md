@@ -8,6 +8,8 @@
 
 [Github OAuth 文档](https://developer.github.com/apps/building-oauth-apps/)
 
+##工具
+
 [OKHttp 做服务器请求](https://square.github.io/okhttp/)
 
 [Maven仓库下载fastjson](https://mvnrepository.com/artifact/com.alibaba/fastjson)
@@ -35,5 +37,8 @@ CREATE TABLE user(
   gmt_create BIGINT,
   gmt_modified BIGINT
 )
+```
+```
+mvn flyway:migrate
 ```
 
