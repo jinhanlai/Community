@@ -16,6 +16,7 @@
 
 [mybatis的快速链接](http://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)
 
+[flyway做数据库迁移](https://flywaydb.org/getstarted/firststeps/maven)
 
 ##项目说明
 controller      #处理页面信息
@@ -26,15 +27,13 @@ model           #数据库中的表对象
 
 ##脚本
 ```sql
-CREATE TABLE user
-(
-  account_id   VARCHAR(100) NOT NULL,
-  name         VARCHAR(50)  NULL,
-  token        CHAR(36)     NULL,
-  gmt_create   BIGINT       NULL,
-  gmt_modified BIGINT       NULL,
-  id           INT(255) AUTO_INCREMENT
-    PRIMARY KEY
-);
+CREATE TABLE user(
+  id INT PRIMARY KEY AUTO_INCREMENT ,
+  account_id VARCHAR(100) not NULL ,
+  nsame VARCHAR(50),
+  tokon char(36),
+  gmt_create BIGINT,
+  gmt_modified BIGINT
+)
 ```
 
