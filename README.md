@@ -10,6 +10,7 @@
 
 [lombok自动生成get，set等方法](https://projectlombok.org)
 [Spring Developer Tools](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#using-boot-devtools)
+[thymeleaf官方文档](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)
 
 ##工具
 
@@ -23,7 +24,6 @@
 
 [flyway做数据库迁移](https://flywaydb.org/getstarted/firststeps/maven)
 
-[thymeleaf官方文档](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)
 ##项目说明
 
 controller      #处理页面信息

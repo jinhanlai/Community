@@ -1,6 +1,7 @@
 package ljh.gold.community.service;
 
 
+import ljh.gold.community.dto.PaginationDOT;
 import ljh.gold.community.dto.QuestionDTO;
 import ljh.gold.community.mapper.QuestionMapper;
 import ljh.gold.community.mapper.UserMapper;
@@ -20,9 +21,27 @@ public class QuestionService {
     @Autowired(required=false)
     private QuestionMapper questionMapper;
 
-    public List<QuestionDTO> list() {
-        List<Question>questions=questionMapper.list();
+    public PaginationDOT list(Integer page, Integer size) {
+
+        Integer totalCount = questionMapper.count();
+        Integer totalPage=0;
+        if (totalCount % size == 0) {
+            totalPage = totalCount / size;
+        } else {
+            totalPage = totalCount / size+1;
+        }
+        if (page<1){
+            page=1;
+        }
+        if (page>totalPage){
+            page=totalPage;
+        }
+        Integer offset=size*(page-1);
+
+        List<Question>questions=questionMapper.list(offset,size);
         List<QuestionDTO>questionDTOList=new ArrayList<>();
+
+        PaginationDOT paginationDOT = new PaginationDOT();
         for (Question question:questions){
             User user=userMapper.findByAccount_id(question.getCreator());
             QuestionDTO questionDTO=new QuestionDTO();
@@ -30,6 +49,8 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        return questionDTOList;
+        paginationDOT.setQuestions(questionDTOList);
+        paginationDOT.setPagination(page,totalPage);
+        return paginationDOT;
     }
 }
