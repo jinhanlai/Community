@@ -1,9 +1,10 @@
-package ljh.gold.community.model;
+package ljh.gold.community.dto;
 
+import ljh.gold.community.model.User;
 import lombok.Data;
 
 @Data
-public class Question {
+public class QuestionDTO {
     private Integer id;
     private String title;
     private String description;
@@ -14,5 +15,6 @@ public class Question {
     private Integer view_count;
     private Integer like_count;
     private String  tag;
+    private User user;
 
 }

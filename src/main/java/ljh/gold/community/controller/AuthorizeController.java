@@ -27,7 +27,7 @@ public class AuthorizeController {
 
 
     @Value("${github.client.id}")
-    private String clientId;
+    private String  clientId;
     @Value("${github.client.secret}")
     private String clientSecret;
     @Value("${github.redirect.url}")
@@ -46,16 +46,23 @@ public class AuthorizeController {
         accessTokenDTO.setRedirect_uri(redirectUrl);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getUser(accessToken);
-        if (githubUser.getId()!=0){
+        if (githubUser!=null&&githubUser.getId()!=0){
             //登录成功
             User user = new User();
-            user.setAccount_id(String.valueOf(githubUser.getId()));
+            user.setAccount_id(githubUser.getId());
             user.setGmt_create(System.currentTimeMillis());
             user.setGmt_modified(user.getGmt_create());
             user.setName(githubUser.getName());
+            user.setBio(githubUser.getBio());
+            user.setAvatar_url(githubUser.getAvatar_url());
             String token = UUID.randomUUID().toString();
             user.setToken(token);
-            userMapper.insert(user);
+            if(userMapper.findByAccount_id(user.getAccount_id())!=null){
+                userMapper.update(user);
+            }
+            else{
+                userMapper.insert(user);
+            }
             response.addCookie(new Cookie("token",token));
             return "redirect:/";
         }else {
