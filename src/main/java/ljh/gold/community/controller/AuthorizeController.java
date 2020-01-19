@@ -63,11 +63,10 @@ public class AuthorizeController {
                 userMapper.insert(user);
             }
             response.addCookie(new Cookie("token",token));
-            return "redirect:/";
         }else {
             //登录失败
-            return "redirect:/";
         }
+        return "redirect:/";
     }
 
 }
