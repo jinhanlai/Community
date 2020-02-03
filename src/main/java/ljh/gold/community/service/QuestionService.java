@@ -60,7 +60,7 @@ public class QuestionService {
 
     public PaginationDOT listByCreator(Integer account_id, Integer page, Integer size) {
         Integer totalCount = questionMapper.countByCreator(account_id);
-        Integer totalPage=0;
+        Integer totalPage = 0;
         Integer offset = 0;
         if (totalCount != 0) {
             if (totalCount % size == 0) {
@@ -81,6 +81,7 @@ public class QuestionService {
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
         PaginationDOT paginationDOT = new PaginationDOT();
+
         for (Question question : questions) {
             User user = userMapper.findByAccount_id(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
@@ -91,5 +92,15 @@ public class QuestionService {
         paginationDOT.setQuestions(questionDTOList);
         paginationDOT.setPagination(page, totalPage);
         return paginationDOT;
+    }
+
+    public QuestionDTO getById(Integer id) {
+        Question question = questionMapper.getById(id);
+        User user = userMapper.findByAccount_id(question.getCreator());
+
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question, questionDTO);//快速拷贝对象
+        questionDTO.setUser(user);
+        return questionDTO;
     }
 }

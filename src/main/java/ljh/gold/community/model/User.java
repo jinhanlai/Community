@@ -14,7 +14,4 @@ public class User {
     private String avatar_url;
 
 
-
-
-
 }

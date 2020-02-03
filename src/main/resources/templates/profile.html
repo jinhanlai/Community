@@ -14,7 +14,7 @@
 <div th:insert="~{navigation :: copy}"></div>
 <div class="container-fluid main profile">
     <div class="row">
-        <div class="col-lg-9 col_lg_3  col_md_12 col_sm_12 col_xs_12">
+        <div class="col-lg-9  col_md_12 col_sm_12 col_xs_12">
             <h2><span th:text="${sectionName}"></span></h2>
             <hr>
             <div class="media" th:each="question:${pagination.questions}">
@@ -25,7 +25,9 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${question.title}"></h4>
+                    <h4 class="media-heading">
+                         <a  th:href="@{'/question/'+${question.id}}" th:text="${question.title}" ></a>
+                    </h4>
                     <span th:text="${question.description}"></span><br>
                     <span class="text-desc">
                         <span th:text="${question.comment_count}"></span>个回复•
@@ -62,7 +64,7 @@
                 </ul>
             </nav>
         </div>
-        <div class="col-lg-3 col_lg_3  col_md_12 col_sm_12 col_xs_12">
+        <div class="col-lg-3  col_md_12 col_sm_12 col_xs_12">
             <div class="list-group section">
                 <a href="/profile/questions" th:class="${section=='questions'}?'active list-group-item':'list-group-item'" >我的问题</a>
                 <a href="/profile/replies" th:class="${section=='replies'}?'active list-group-item':'list-group-item'" >最新回复

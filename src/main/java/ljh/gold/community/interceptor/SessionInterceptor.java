@@ -13,8 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 
 @Service
 public class SessionInterceptor implements HandlerInterceptor {
-    @Autowired(required=false)
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
+
+    public SessionInterceptor(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
