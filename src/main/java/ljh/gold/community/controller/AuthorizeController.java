@@ -2,11 +2,12 @@ package ljh.gold.community.controller;
 
 import ljh.gold.community.dto.AccessTokenDTO;
 import ljh.gold.community.dto.GithubUser;
-import ljh.gold.community.mapper.UserMapper;
 import ljh.gold.community.model.User;
 import ljh.gold.community.provider.GithubProvider;
+import ljh.gold.community.service.UserService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,10 +19,13 @@ import java.util.UUID;
 
 
 @Controller
+@Slf4j
 public class AuthorizeController {
 
-    private final GithubProvider githubProvider;
-    private final UserMapper userMapper;
+    @Autowired
+    private  GithubProvider githubProvider;
+    @Autowired(required = false)
+    private UserService userService;
 
     @Value("${github.client.id}")
     private String  clientId;
@@ -30,10 +34,6 @@ public class AuthorizeController {
     @Value("${github.redirect.url}")
     private String redirectUrl;
 
-    public AuthorizeController(GithubProvider githubProvider, UserMapper userMapper) {
-        this.githubProvider = githubProvider;
-        this.userMapper = userMapper;
-    }
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
@@ -56,18 +56,11 @@ public class AuthorizeController {
             user.setAvatar_url(githubUser.getAvatar_url());
             String token = UUID.randomUUID().toString();
             user.setToken(token);
-            if(userMapper.findByAccount_id(user.getAccount_id())!=null){
-                user.setGmt_modified(System.currentTimeMillis());
-                userMapper.update(user);
-            }
-            else{
-                user.setGmt_create(System.currentTimeMillis());
-                user.setGmt_modified(user.getGmt_create());
-                userMapper.insert(user);
-            }
+            userService.createOrUpdate(user);
             response.addCookie(new Cookie("token",token));
         }else {
             //登录失败
+             log.error("callback get github error,{}", githubUser);
             return "redirect:/";
         }
         return "redirect:/";

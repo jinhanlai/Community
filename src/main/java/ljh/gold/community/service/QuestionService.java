@@ -6,7 +6,10 @@ import ljh.gold.community.dto.QuestionDTO;
 import ljh.gold.community.mapper.QuestionMapper;
 import ljh.gold.community.mapper.UserMapper;
 import ljh.gold.community.model.Question;
+import ljh.gold.community.model.QuestionExample;
 import ljh.gold.community.model.User;
+import ljh.gold.community.model.UserExample;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +26,7 @@ public class QuestionService {
 
     public PaginationDOT list(Integer page, Integer size) {
 
-        Integer totalCount = questionMapper.count();
+        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
         Integer totalPage = 0;
         Integer offset = 0;
         if (totalCount != 0) {
@@ -42,12 +45,16 @@ public class QuestionService {
         }
 
 
-        List<Question> questions = questionMapper.list(offset, size);
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
+
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
         PaginationDOT paginationDOT = new PaginationDOT();
         for (Question question : questions) {
-            User user = userMapper.findByAccount_id(question.getCreator());
+            UserExample example = new UserExample();
+            example.createCriteria().andAccount_idEqualTo(question.getCreator());
+            List<User> users = userMapper.selectByExample(example);
+            User user = users.get(0);
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);//快速拷贝对象
             questionDTO.setUser(user);
@@ -59,7 +66,9 @@ public class QuestionService {
     }
 
     public PaginationDOT listByCreator(Integer account_id, Integer page, Integer size) {
-        Integer totalCount = questionMapper.countByCreator(account_id);
+        QuestionExample example = new QuestionExample();
+        example.createCriteria().andCreatorEqualTo(account_id);
+        Integer totalCount = (int) questionMapper.countByExample(example);
         Integer totalPage = 0;
         Integer offset = 0;
         if (totalCount != 0) {
@@ -77,13 +86,19 @@ public class QuestionService {
             offset = size * (page - 1);
         }
 
-        List<Question> questions = questionMapper.listByCreator(account_id, offset, size);
+        QuestionExample example1 = new QuestionExample();
+        example1.createCriteria().andCreatorEqualTo(account_id);
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example1, new RowBounds(offset, size));
+
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
         PaginationDOT paginationDOT = new PaginationDOT();
 
         for (Question question : questions) {
-            User user = userMapper.findByAccount_id(question.getCreator());
+            UserExample example2 = new UserExample();
+            example2.createCriteria().andAccount_idEqualTo(question.getCreator());
+            List<User> users = userMapper.selectByExample(example2);
+            User user = users.get(0);
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);//快速拷贝对象
             questionDTO.setUser(user);
@@ -95,8 +110,11 @@ public class QuestionService {
     }
 
     public QuestionDTO getById(Integer id) {
-        Question question = questionMapper.getById(id);
-        User user = userMapper.findByAccount_id(question.getCreator());
+        Question question = questionMapper.selectByPrimaryKey(id);
+        UserExample example = new UserExample();
+        example.createCriteria().andAccount_idEqualTo(question.getCreator());
+        List<User> users = userMapper.selectByExample(example);
+        User user = users.get(0);
 
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);//快速拷贝对象
@@ -108,11 +126,17 @@ public class QuestionService {
         if (question.getId() == null) {
             question.setGmt_create(System.currentTimeMillis());
             question.setGmt_modified(question.getGmt_create());
-            questionMapper.insert(question);
-        }
-        else {
-            question.setGmt_modified(System.currentTimeMillis());
-            questionMapper.update(question);
+            questionMapper.insertSelective(question);
+        } else {
+            Question updatequestion = new Question();
+            updatequestion.setGmt_modified(System.currentTimeMillis());
+            updatequestion.setTitle(question.getTitle());
+            updatequestion.setDescription(question.getDescription());
+            updatequestion.setTag(question.getTag());
+
+            QuestionExample questionExample = new QuestionExample();
+            questionExample.createCriteria().andIdEqualTo(question.getId());
+            questionMapper.updateByExampleSelective(updatequestion,questionExample);//updateByExampleSelective这个方法的参数是只包含更新的参数对象
         }
     }
 }

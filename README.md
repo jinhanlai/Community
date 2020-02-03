@@ -9,9 +9,14 @@
 [Github OAuth 文档](https://developer.github.com/apps/building-oauth-apps/)
 
 [lombok自动生成get，set等方法](https://projectlombok.org)
+
 [Spring Developer Tools](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#using-boot-devtools)
+
 [thymeleaf官方文档](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)
+
 [Spring MVC(拦截器)](https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.html#mvc-handlermapping-interceptor)
+
+[mybatis generators](http://mybatis.org/generator/)
 
 
 ##工具
@@ -48,5 +53,6 @@ CREATE TABLE user(
 ```
 ```
 mvn flyway:migrate
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 ```
 
