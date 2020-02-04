@@ -3,6 +3,8 @@ package ljh.gold.community.service;
 
 import ljh.gold.community.dto.PaginationDOT;
 import ljh.gold.community.dto.QuestionDTO;
+import ljh.gold.community.exception.CustomizeErrorCode;
+import ljh.gold.community.exception.CustomizeException;
 import ljh.gold.community.mapper.QuestionMapper;
 import ljh.gold.community.mapper.UserMapper;
 import ljh.gold.community.model.Question;
@@ -111,6 +113,9 @@ public class QuestionService {
 
     public QuestionDTO getById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if (question==null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         UserExample example = new UserExample();
         example.createCriteria().andAccount_idEqualTo(question.getCreator());
         List<User> users = userMapper.selectByExample(example);
@@ -136,7 +141,10 @@ public class QuestionService {
 
             QuestionExample questionExample = new QuestionExample();
             questionExample.createCriteria().andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(updatequestion,questionExample);//updateByExampleSelective这个方法的参数是只包含更新的参数对象
+            int update = questionMapper.updateByExampleSelective(updatequestion, questionExample);//updateByExampleSelective这个方法的参数是只包含更新的参数对象
+            if (update!=1){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
     }
 }
