@@ -19,7 +19,10 @@ public class QuestionController {
     @GetMapping("/question/{id}")
     public String question(@PathVariable(name = "id")Integer id,
                            Model model){
+        //按question的id查询数据库并拼接user
         QuestionDTO questionDTO=questionService.getById(id);
+        //增加阅读数
+        questionService.increaseView(id);
         model.addAttribute("question",questionDTO);
         return "question";
     }

@@ -5,6 +5,7 @@ import ljh.gold.community.dto.PaginationDOT;
 import ljh.gold.community.dto.QuestionDTO;
 import ljh.gold.community.exception.CustomizeErrorCode;
 import ljh.gold.community.exception.CustomizeException;
+import ljh.gold.community.mapper.QuestionExtMapper;
 import ljh.gold.community.mapper.QuestionMapper;
 import ljh.gold.community.mapper.UserMapper;
 import ljh.gold.community.model.Question;
@@ -25,6 +26,9 @@ public class QuestionService {
     private UserMapper userMapper;
     @Autowired(required = false)
     private QuestionMapper questionMapper;
+    @Autowired(required = false)
+    private QuestionExtMapper questionExtMapper;
+
 
     public PaginationDOT list(Integer page, Integer size) {
 
@@ -146,5 +150,13 @@ public class QuestionService {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
+    }
+
+    public void increaseView(Integer id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setView_count(1);
+        questionExtMapper.increaseView(question);
+
     }
 }
