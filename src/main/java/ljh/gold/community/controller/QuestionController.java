@@ -2,7 +2,6 @@ package ljh.gold.community.controller;
 
 
 import ljh.gold.community.dto.QuestionDTO;
-import ljh.gold.community.mapper.QuestionMapper;
 import ljh.gold.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +16,7 @@ public class QuestionController {
     private QuestionService questionService;
 
     @GetMapping("/question/{id}")
-    public String question(@PathVariable(name = "id")Integer id,
+    public String question(@PathVariable(name = "id")Long id,
                            Model model){
         //按question的id查询数据库并拼接user
         QuestionDTO questionDTO=questionService.getById(id);

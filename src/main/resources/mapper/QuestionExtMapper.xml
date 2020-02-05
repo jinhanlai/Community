@@ -30,4 +30,9 @@
         set view_count = view_count+#{view_count,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
+    <update id="increaseCommentCount" parameterType="ljh.gold.community.model.Question">
+        update question
+        set comment_count = comment_count+#{comment_count,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

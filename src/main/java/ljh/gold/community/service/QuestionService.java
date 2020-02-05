@@ -50,8 +50,7 @@ public class QuestionService {
             offset = size * (page - 1);
         }
 
-
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
+        List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
@@ -62,7 +61,7 @@ public class QuestionService {
             List<User> users = userMapper.selectByExample(example);
             User user = users.get(0);
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question, questionDTO);//快速拷贝对象
+            BeanUtils.copyProperties(question, questionDTO);//快速拷贝对象name
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
@@ -71,7 +70,7 @@ public class QuestionService {
         return paginationDOT;
     }
 
-    public PaginationDOT listByCreator(Integer account_id, Integer page, Integer size) {
+    public PaginationDOT listByCreator(Long account_id, Integer page, Integer size) {
         QuestionExample example = new QuestionExample();
         example.createCriteria().andCreatorEqualTo(account_id);
         Integer totalCount = (int) questionMapper.countByExample(example);
@@ -94,7 +93,7 @@ public class QuestionService {
 
         QuestionExample example1 = new QuestionExample();
         example1.createCriteria().andCreatorEqualTo(account_id);
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example1, new RowBounds(offset, size));
+        List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(example1, new RowBounds(offset, size));
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
@@ -115,7 +114,7 @@ public class QuestionService {
         return paginationDOT;
     }
 
-    public QuestionDTO getById(Integer id) {
+    public QuestionDTO getById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question==null){
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
@@ -152,7 +151,7 @@ public class QuestionService {
         }
     }
 
-    public void increaseView(Integer id) {
+    public void increaseView(Long id) {
         Question question = new Question();
         question.setId(id);
         question.setView_count(1);

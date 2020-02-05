@@ -76,7 +76,7 @@
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
-                <version>6.1.4</version>
+                <version>5.2.4</version>
                 <configuration>
                     <url>jdbc:mysql://localhost:3306/community?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC</url>
                     <user>root</user>
