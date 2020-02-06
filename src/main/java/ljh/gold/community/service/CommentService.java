@@ -10,6 +10,7 @@ import ljh.gold.community.model.Comment;
 import ljh.gold.community.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @Author: jinhanlai
@@ -24,6 +25,7 @@ public class CommentService {
     @Autowired(required = false)
     private QuestionExtMapper questionExtMapper;
 
+    @Transactional
     public void insert(Comment comment) {
         if (comment.getParent_id() == null || comment.getParent_id() == 0) {
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
@@ -44,7 +46,6 @@ public class CommentService {
             if (question == null) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
-
             commentMapper.insertSelective(comment);
             question.setComment_count(1);
             questionExtMapper.increaseCommentCount(question);

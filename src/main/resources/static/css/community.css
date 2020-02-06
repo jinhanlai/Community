@@ -13,6 +13,9 @@ body{
     width: 50px;
     height:50px;
 }
+.meidia-body{
+    padding-top: 13px;
+}
 .text-desc{
     font-size: 12px;
     font-weight: normal;
@@ -27,4 +30,7 @@ body{
 }
 .jumbotron{
     margin-left: 100px;
+}
+.comment{
+    margin: 15px 0;
 }
