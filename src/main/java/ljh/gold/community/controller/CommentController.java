@@ -1,19 +1,18 @@
 package ljh.gold.community.controller;
 
-import ljh.gold.community.dto.CommentDTO;
+import ljh.gold.community.dto.CommentCreateDTO;
 import ljh.gold.community.dto.ResultDTO;
 import ljh.gold.community.exception.CustomizeErrorCode;
 import ljh.gold.community.mapper.CommentMapper;
 import ljh.gold.community.model.Comment;
 import ljh.gold.community.model.User;
 import ljh.gold.community.service.CommentService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Author: jinhanlai
@@ -27,21 +26,25 @@ public class CommentController {
     private CommentService commentService;
 
     @ResponseBody
-    @RequestMapping(value = "/comment" ,method = RequestMethod.POST)
-    public Object post(@RequestBody CommentDTO commentDTO,
-                        HttpServletRequest request){
+    @RequestMapping(value = "/comment", method = RequestMethod.POST)
+    public Object post(@RequestBody CommentCreateDTO commentCreateDTO,
+                       HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
-        if(user==null){
+        if (user == null) {
             return ResultDTO.errorof(CustomizeErrorCode.NOT_LOGIN);
         }
+        if (commentCreateDTO == null || StringUtils.isBlank(commentCreateDTO.getContent())) {
+            return ResultDTO.errorof(CustomizeErrorCode.CONTENT_IS_EMPTY);
+        }
         Comment comment = new Comment();
-        comment.setParent_id(commentDTO.getParent_id());
-        comment.setContent(commentDTO.getContent());
-        comment.setType(commentDTO.getType());
+        comment.setParent_id(commentCreateDTO.getParent_id());
+        comment.setContent(commentCreateDTO.getContent());
+        comment.setType(commentCreateDTO.getType());
         comment.setGmt_create(System.currentTimeMillis());
         comment.setGmt_modified(System.currentTimeMillis());
         comment.setCommentator(user.getAccount_id());
         comment.setLike_count(0L);
+
 
         commentService.insert(comment);
 

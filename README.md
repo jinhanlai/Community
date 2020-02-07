@@ -23,7 +23,7 @@
 
 [OKHttp 做服务器请求](https://square.github.io/okhttp/)
 
-[Maven仓库下载fastjson](https://mvnrepository.com/artifact/com.alibaba/fastjson)
+[Maven仓库下载fastjson](https://mvnrepository.com)
 
 [Springboot 数据库连接](https://docs.spring.io/spring-boot/docs/2.2.0.RC1/reference/htmlsingle/)
 

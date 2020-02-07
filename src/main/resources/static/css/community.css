@@ -14,7 +14,7 @@ body{
     height:50px;
 }
 .meidia-body{
-    padding-top: 13px;
+    padding-top: 0;
 }
 .text-desc{
     font-size: 12px;
@@ -27,10 +27,34 @@ body{
 .community-menu{
     color: #999;
     font-size: 12px;
+    display: block;
+    margin-bottom: 15px;
 }
 .jumbotron{
     margin-left: 100px;
 }
 .comment{
     margin: 15px 0;
+}
+.question_title{
+    margin-top: 12px;
+}
+.question_sp{
+    margin-top: 0;
+}
+.menu{
+    color: #999;
+    margin-top: 5px;
+}
+.menu .icon{
+    margin-right: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.menu .icon:hover{
+    color: #499ef3;
+}
+.comments{
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
 }
