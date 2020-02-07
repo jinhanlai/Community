@@ -3,6 +3,7 @@ package ljh.gold.community.controller;
 
 import ljh.gold.community.dto.CommentDTO;
 import ljh.gold.community.dto.QuestionDTO;
+import ljh.gold.community.enums.CommentTypeEnum;
 import ljh.gold.community.service.CommentService;
 import ljh.gold.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class QuestionController {
                            Model model){
         //按question的id查询数据库并拼接user
         QuestionDTO questionDTO=questionService.getById(id);
-        List<CommentDTO> comments= commentService.listByQuestionId(id);
+        List<CommentDTO> comments= commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
 
         //增加阅读数
         questionService.increaseView(id);

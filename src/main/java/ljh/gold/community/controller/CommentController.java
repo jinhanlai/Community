@@ -1,7 +1,9 @@
 package ljh.gold.community.controller;
 
 import ljh.gold.community.dto.CommentCreateDTO;
+import ljh.gold.community.dto.CommentDTO;
 import ljh.gold.community.dto.ResultDTO;
+import ljh.gold.community.enums.CommentTypeEnum;
 import ljh.gold.community.exception.CustomizeErrorCode;
 import ljh.gold.community.mapper.CommentMapper;
 import ljh.gold.community.model.Comment;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @Author: jinhanlai
@@ -44,10 +47,14 @@ public class CommentController {
         comment.setGmt_modified(System.currentTimeMillis());
         comment.setCommentator(user.getAccount_id());
         comment.setLike_count(0L);
-
-
         commentService.insert(comment);
-
         return ResultDTO.okof();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
+    public ResultDTO comments(@PathVariable(name = "id") Long id) {
+        List<CommentDTO> commentDTOS = commentService.listByTargetId(id, CommentTypeEnum.COMMENT);
+        return ResultDTO.okof(commentDTOS);
     }
 }
