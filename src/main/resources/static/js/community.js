@@ -58,22 +58,39 @@ function collapsecomment(e) {
     const comment = $("#comment-" + id);
     comment.toggleClass("in");
     e.classList.toggle("active");
-    if (comment.hasClass("in")) {
+    if (comment.hasClass("in")&&comment.children().length ==1)  {
         $.getJSON("/comment/" + id, function (data) {
             console.log(data);
-            const commenBody = $("#comment-body-" + id);
-            const items = [];
-            $.each(data.data, function (comment) {
-                const c=$("<div/>", {
+            const subCommentContainer = $("#comment-" + id);
+            $.each(data.data.reverse(), function (index, comment) {
+                const medialeft = $("<div/>", {
+                    "class": "media-left",
+                }).append($("<img/>", {
+                    "class": "media-object meidia-object img-rounded",
+                    "src": comment.user.avatar_url,
+                }));
+                const mediaBody = $("<div/>", {
+                    "class": "media-body meidia-body",
+                }).append($("<h5/>", {
+                    "class": "media-heading",
+                    "html": comment.user.name,
+                })).append($("<div/>", {
+                    "html": comment.content,
+                }).append($("<div/>",{
+                    "class":"menu"
+                }).append($("<span/>", {
+                    "class": "pull-right",
+                    "html": moment(comment.gmt_modified).format("YYYY-MM-DD"),
+                }))));
+                const media = $("<div/>", {
+                    "class": "media",
+                }).append(medialeft).append(mediaBody);
+                const c = $("<div/>", {
                     "class": "col-lg-12 col_md_12 col_sm_12 col_xs_12 comments",
-                    html: comment.content,
-                });
-                items.push(c);
+                }).append(media);
+                subCommentContainer.prepend(c);
             });
-            commenBody.appendChild($("<div/>", {
-                "class": "col-lg-12 col_md_12 col_sm_12 col_xs_12 collapse sub-comments",
-                "id": "comment" + id,
-            }));
+
         })
     } else {
 
