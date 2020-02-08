@@ -64,7 +64,19 @@ margin: 10px 0;
 .question_sp {
     margin-top: 0;
 }
-
+.question-tag{
+    margin-right: 10px;
+    font-size: 13px;
+}
+.question-related{
+    line-height: 24px;
+    font-size: 15px;
+    padding-left: 0;
+    list-style: none;
+}
+.question-related a:hover{
+    color: #499ef3;
+}
 .menu {
     color: #999;
     margin-top: 5px;
@@ -77,7 +89,7 @@ margin: 10px 0;
 }
 
 .menu .icon:hover {
-    color: #499ef3;
+    color: #eea236;
 }
 
 .comments {

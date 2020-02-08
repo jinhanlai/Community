@@ -4,6 +4,7 @@ package ljh.gold.community.controller;
 import ljh.gold.community.dto.CommentDTO;
 import ljh.gold.community.dto.QuestionDTO;
 import ljh.gold.community.enums.CommentTypeEnum;
+import ljh.gold.community.model.Question;
 import ljh.gold.community.service.CommentService;
 import ljh.gold.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,12 @@ public class QuestionController {
         QuestionDTO questionDTO=questionService.getById(id);
         List<CommentDTO> comments= commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
 
+        List<QuestionDTO> releatedQuestion=questionService.selectRelated(questionDTO);
         //增加阅读数
         questionService.increaseView(id);
         model.addAttribute("question",questionDTO);
         model.addAttribute("comments",comments);
+        model.addAttribute("relatedQuestions",releatedQuestion);
         return "question";
     }
 }

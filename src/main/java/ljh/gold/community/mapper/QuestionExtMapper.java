@@ -15,4 +15,5 @@ public interface QuestionExtMapper {
 
     int increaseCommentCount(Question record);
 
+    List<Question> selectRelated(Question question);
 }
