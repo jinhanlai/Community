@@ -170,8 +170,8 @@ public class QuestionService {
         if(StringUtils.isBlank(questionQueryDTO.getTag())){
             return new ArrayList<>();
         }
-        String[] tags=StringUtils.split(questionQueryDTO.getTag(),',');
-        String regexTag = String.join("|", tags);
+        String[] tags=StringUtils.split(questionQueryDTO.getTag(),';');
+        String regexTag = String.join("|", tags).replace("+","\\\\+");
 
         Question question = new Question();
         question.setId(questionQueryDTO.getId());

@@ -36,7 +36,15 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
     <select id="selectRelated" parameterType="ljh.gold.community.model.Question" resultMap="BaseResultMap">
-    select *
-    from question where tag regexp #{tag} and id !=#{id}
+    select * from QUESTION
+        <where>
+            <if test="id != null">
+                and id != #{id}
+            </if>
+            <if test="tag != null and tag != ''">
+                and tag regexp #{tag}
+            </if>
+        </where>
+        order by gmt_create desc limit 20
   </select>
 </mapper>
