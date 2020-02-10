@@ -3,6 +3,7 @@ package ljh.gold.community.interceptor;
 import ljh.gold.community.mapper.UserMapper;
 import ljh.gold.community.model.User;
 import ljh.gold.community.model.UserExample;
+import ljh.gold.community.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,8 +18,8 @@ import java.util.List;
 public class SessionInterceptor implements HandlerInterceptor {
     @Autowired(required = false)
     private  UserMapper userMapper;
-
-
+    @Autowired(required = false)
+    private NotificationService notificationService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie[] cookies = request.getCookies();
@@ -32,6 +33,8 @@ public class SessionInterceptor implements HandlerInterceptor {
                     List<User> users = userMapper.selectByExample(userexample);
                     if (users.size()!=0){
                         request.getSession().setAttribute("user",users.get(0));
+                        Long unreadCount=notificationService.unReadCount(users.get(0).getAccount_id());
+                        request.getSession().setAttribute("unreadCount",unreadCount);
                     }
                     break;
                 }

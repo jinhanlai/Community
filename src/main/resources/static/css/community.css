@@ -133,3 +133,10 @@ body {
 .menu .active {
     color: #499ef3;
 }
+.notify-count{
+background-color: #d9534f;
+    color: #fff;
+    padding: 0.2em .6em .3em;
+    margin-left: 3px;
+    margin-bottom: 3px;
+}

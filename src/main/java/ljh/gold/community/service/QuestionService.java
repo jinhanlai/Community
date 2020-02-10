@@ -60,7 +60,7 @@ public class QuestionService {
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
-        PaginationDOT paginationDOT = new PaginationDOT();
+        PaginationDOT<QuestionDTO> paginationDOT = new PaginationDOT<>();
         for (Question question : questions) {
             UserExample example = new UserExample();
             example.createCriteria().andAccount_idEqualTo(question.getCreator());
@@ -71,7 +71,7 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        paginationDOT.setQuestions(questionDTOList);
+        paginationDOT.setData(questionDTOList);
         paginationDOT.setPagination(page, totalPage);
         return paginationDOT;
     }
@@ -104,7 +104,7 @@ public class QuestionService {
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
-        PaginationDOT paginationDOT = new PaginationDOT();
+        PaginationDOT<QuestionDTO> paginationDOT = new PaginationDOT<>();
 
         for (Question question : questions) {
             UserExample example2 = new UserExample();
@@ -116,7 +116,7 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        paginationDOT.setQuestions(questionDTOList);
+        paginationDOT.setData(questionDTOList);
         paginationDOT.setPagination(page, totalPage);
         return paginationDOT;
     }
