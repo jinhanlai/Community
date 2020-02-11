@@ -34,6 +34,9 @@
 [postman](https://chrome.google.com/webstore/detail/coohjcphdfgbiolnekdpbcijmhambjff)
 
 [moment.js](https://momentjs.com)
+
+[markdown Editor.md](https://pandao.github.io/editor.md/)
+
 ##项目说明
 
 controller      #处理页面信息

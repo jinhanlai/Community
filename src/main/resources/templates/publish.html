@@ -6,11 +6,11 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/editormd.css">
     <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
-    <script src="/js/bootstrap.js" type="application/javascript"></script>
+     <script src="/js/bootstrap.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
-
-
+    <script src="/js/editormd.min.js"></script>
 </head>
 <body>
 <div th:insert="~{navigation :: copy}"></div>
@@ -26,11 +26,27 @@
                     <input autocomplete="off" type="text" name="title" th:value="${title}" class="form-control"
                            id="title" placeholder="简单标题....">
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="question-editor">
                     <label for="description">问题补充 (必填,请参考右侧提示);</label>
-                    <textarea id="description" name="description" th:text="${description}" class="form-control"
+                    <textarea id="description" name="description" th:text="${description}" style="display:none;"
+                              class="form-control"
                               cols="30" rows="10"></textarea>
                 </div>
+                <script type="text/javascript">
+                    $(function () {
+                        const editor = editormd("question-editor", {
+                            width: "100%",
+                            height: 350,
+                            path: "/js/lib/",
+                            delay: 0,
+                            watch: false,
+                            placeholder: "请输入问题描述",
+                            imageUpload: true,
+                            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                            imageUploadURL: "/file/upload",
+                        });
+                    });
+                </script>
                 <div class="form-group">
                     <label for="tag">添加标签:</label>
                     <input type="text" autocomplete="off" class="form-control" th:value="${tag}" id="tag" name="tag"
