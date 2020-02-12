@@ -1,9 +1,9 @@
 package ljh.gold.community.service;
 
 
-import ljh.gold.community.dto.CommentDTO;
 import ljh.gold.community.dto.PaginationDOT;
 import ljh.gold.community.dto.QuestionDTO;
+import ljh.gold.community.dto.QuestionQueryDTO;
 import ljh.gold.community.exception.CustomizeErrorCode;
 import ljh.gold.community.exception.CustomizeException;
 import ljh.gold.community.mapper.QuestionExtMapper;
@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,10 +33,17 @@ public class QuestionService {
     private QuestionExtMapper questionExtMapper;
 
 
-    public PaginationDOT list(Integer page, Integer size) {
+    public PaginationDOT list(String search, Integer page, Integer size) {
+        if (StringUtils.isNotBlank(search)) {
+            String[] tags = StringUtils.split(search, ' ');
+             search = String.join("|", tags).replace("+", "\\\\+");
+        }
 
-        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
-        Integer totalPage = 0;
+
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setSearch(search);
+        Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
+        Integer totalPage=0;
         Integer offset = 0;
         if (totalCount != 0) {
             if (totalCount % size == 0) {
@@ -54,9 +60,9 @@ public class QuestionService {
             offset = size * (page - 1);
         }
 
-        QuestionExample questionExample = new QuestionExample();
-        questionExample.setOrderByClause("gmt_create desc");
-        List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(questionExample, new RowBounds(offset, size));
+        questionQueryDTO.setPage(page);
+        questionQueryDTO.setSize(size);
+        List<Question> questions = questionExtMapper.selectBySearch(questionQueryDTO);
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
@@ -123,7 +129,7 @@ public class QuestionService {
 
     public QuestionDTO getById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
-        if (question==null){
+        if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
         UserExample example = new UserExample();
@@ -152,7 +158,7 @@ public class QuestionService {
             QuestionExample questionExample = new QuestionExample();
             questionExample.createCriteria().andIdEqualTo(question.getId());
             int update = questionMapper.updateByExampleSelective(updatequestion, questionExample);//updateByExampleSelective这个方法的参数是只包含更新的参数对象
-            if (update!=1){
+            if (update != 1) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
@@ -167,11 +173,11 @@ public class QuestionService {
     }
 
     public List<QuestionDTO> selectRelated(QuestionDTO questionQueryDTO) {
-        if(StringUtils.isBlank(questionQueryDTO.getTag())){
+        if (StringUtils.isBlank(questionQueryDTO.getTag())) {
             return new ArrayList<>();
         }
-        String[] tags=StringUtils.split(questionQueryDTO.getTag(),';');
-        String regexTag = String.join("|", tags).replace("+","\\\\+");
+        String[] tags = StringUtils.split(questionQueryDTO.getTag(), ';');
+        String regexTag = String.join("|", tags).replace("+", "\\\\+");
 
         Question question = new Question();
         question.setId(questionQueryDTO.getId());

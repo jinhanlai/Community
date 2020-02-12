@@ -37,7 +37,8 @@ public class ResultDTO<T> {
         resultDTO.setMessage("请求成功！！");
         return resultDTO;
     }
-        public static <T> ResultDTO okof(T   t) {
+
+    public static <T> ResultDTO okof(T t) {
         ResultDTO resultDTO = new ResultDTO();
         resultDTO.setCode(200);
         resultDTO.setMessage("请求成功！！");

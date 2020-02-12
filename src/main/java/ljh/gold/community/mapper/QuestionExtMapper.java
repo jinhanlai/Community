@@ -1,9 +1,7 @@
 package ljh.gold.community.mapper;
 
+import ljh.gold.community.dto.QuestionQueryDTO;
 import ljh.gold.community.model.Question;
-import ljh.gold.community.model.QuestionExample;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -16,4 +14,8 @@ public interface QuestionExtMapper {
     int increaseCommentCount(Question record);
 
     List<Question> selectRelated(Question question);
+
+    int countBySearch(QuestionQueryDTO questionQueryDTO);
+
+    List<Question> selectBySearch(QuestionQueryDTO questionQueryDTO);
 }

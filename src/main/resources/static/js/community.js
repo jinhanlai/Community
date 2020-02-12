@@ -115,3 +115,21 @@ function showSelectTag() {
 function dispareSelectTag() {
 
 }
+function dosearch() {
+    const content=$("#search").val();
+     if (!content) {
+        alert("输入内容为空！！");
+        return;
+    }
+    $.ajax({
+        type: "Post",
+        dataType: "json",
+        contentType: 'application/json',
+        url: "/",
+        data: JSON.stringify({
+            "search": content,
+        }),
+        success: function () {
+        },
+    });
+}

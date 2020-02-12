@@ -36,7 +36,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
     <select id="selectRelated" parameterType="ljh.gold.community.model.Question" resultMap="BaseResultMap">
-    select * from QUESTION
+        select * from QUESTION
         <where>
             <if test="id != null">
                 and id != #{id}
@@ -46,5 +46,22 @@
             </if>
         </where>
         order by gmt_create desc limit 20
-  </select>
+    </select>
+    <select id="countBySearch" parameterType="ljh.gold.community.dto.QuestionQueryDTO" resultType="java.lang.Integer">
+        select count(*) from QUESTION
+        <where>
+            <if test="search != null and search != ''">
+                and title regexp #{search}
+            </if>
+        </where>
+    </select>
+    <select id="selectBySearch" parameterType="ljh.gold.community.dto.QuestionQueryDTO" resultMap="BaseResultMap">
+        select * from QUESTION
+        <where>
+            <if test="search != null and search != ''">
+                and title regexp #{search}
+            </if>
+        </where>
+        order by gmt_create desc limit #{page},#{size}
+    </select>
 </mapper>
