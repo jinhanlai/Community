@@ -11,6 +11,7 @@ function post() {
 function comment2Target(questionId, comment_content, type) {
     if (!comment_content) {
         alert("不能回复空内容！！");
+        return;
     }
     $.ajax({
         type: "POST",
