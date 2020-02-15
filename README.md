@@ -1,5 +1,28 @@
 #学习社区
 
+##部署
+###依赖
+* Git
+* JDK
+* Maven
+* Mysql
+###步骤
+* yum update
+* yum intall git
+* git clone git@github.com:jinhanlai/Community.git
+* yum install maven    mvn -v
+* mvn compile package
+* cp src/main/resources/application.properties src/main/resources/application-production.properties 
+* vim src/main/resources/application-production.properties 
+* mvn package
+* java -jar -Dspring.profiles.active=production target/community-0.0.1-SNAPSHOT.jar
+
+
+
+
+
+
+
 ##文档
 
 [Spring 文档](https://spring.io/guides/gs/serving-web-content/)
@@ -60,5 +83,6 @@ CREATE TABLE user(
 ```
 mvn flyway:migrate
 mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+mvn flyway:repair   修复错误的命令
 ```
 
