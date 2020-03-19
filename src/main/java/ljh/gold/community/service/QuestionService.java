@@ -33,15 +33,18 @@ public class QuestionService {
     private QuestionExtMapper questionExtMapper;
 
 
-    public PaginationDOT list(String search, Integer page, Integer size) {
+    public PaginationDOT list(String search, Integer page, Integer size, String tag, String sort) {
         if (StringUtils.isNotBlank(search)) {
             String[] tags = StringUtils.split(search, ' ');
              search = String.join("|", tags).replace("+", "\\\\+");
         }
 
-
         QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
         questionQueryDTO.setSearch(search);
+        if (StringUtils.isNotBlank(tag)) {
+            tag = tag.replace("+", "").replace("*", "").replace("?", "");
+            questionQueryDTO.setTag(tag);
+        }
         Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
         Integer totalPage=0;
         Integer offset = 0;
@@ -60,7 +63,7 @@ public class QuestionService {
             offset = size * (page - 1);
         }
 
-        questionQueryDTO.setPage(page);
+        questionQueryDTO.setPage(offset);
         questionQueryDTO.setSize(size);
         List<Question> questions = questionExtMapper.selectBySearch(questionQueryDTO);
 

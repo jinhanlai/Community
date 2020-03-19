@@ -60,6 +60,8 @@
 
 [markdown Editor.md](https://pandao.github.io/editor.md/)
 
+[Spring Schedule](https://spring.io/guides/gs/scheduling-tasks/)
+
 ##项目说明
 
 controller      #处理页面信息
@@ -86,3 +88,4 @@ mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 mvn flyway:repair   修复错误的命令
 ```
 
+>[参考地址](https://github.com/codedrinker/community)
